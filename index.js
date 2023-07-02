@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
 
             socket.broadcast.emit('new user', { success: true, message: data + ' entrou no chat.' });
 
-            socket.emit('chat message', { success: true, message: 'Bem-vindo ao chat ' + data });
+            socket.emit('new user', { success: true, message: 'Bem-vindo ao chat ' + data });
 
             //Emit para os outros usuários dizendo que tem um novo usuário ativo.
 
