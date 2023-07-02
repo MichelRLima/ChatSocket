@@ -25,6 +25,7 @@
             height: 10%;
             box-sizing: border-box;
             backdrop-filter: blur(10px);
+
         }
 
         #input {
@@ -34,7 +35,8 @@
             border-radius: 2rem;
             margin: 0.5em;
             height: 85%;
-            font-size: 30px
+            font-size: 30px;
+
         }
 
         #input:focus {
@@ -51,19 +53,20 @@
             color: #fff;
             height: 85%;
             width: 20%;
-            font-size: 30px
+            font-size: 30px;
+            cursor: pointer;
         }
 
 
         #messages {
             list-style-type: none;
-            margin: 0;
+            margin-bottom: 150px;
             padding: 0;
             font-size: 30px
         }
 
         #messages>li {
-            padding: 0.5rem 1rem;
+            padding: 3% 2%;
         }
 
         #messages>li {
@@ -100,10 +103,15 @@
 
 
         socket.on('new user', function (data) {
-
+            console.log("chamou")
+            console.log(data.success)
             if (data.success) {
+                var item = document.createElement('li');
 
-                alert(data.message);
+                item.textContent = data.message
+                item.style.fontSize = '20px'
+                item.style.color = '#575757'
+                messages.appendChild(item);
 
             } else {
 
@@ -160,7 +168,11 @@
 
                 item.style.backgroundColor = 'gray';
 
-                item.textContent = obj.nome + ' disse: ' + obj.msg;
+                item.textContent = ' Eu: ' + obj.msg;
+
+                item.style.margin = '10px 10px'
+
+                item.style.borderRadius = '10px'
 
                 messages.appendChild(item);
 
@@ -175,6 +187,9 @@
 
 
                 item.textContent = obj.nome + ' disse: ' + obj.msg;
+                item.style.border = '1px solid gray'
+                item.style.borderRadius = '10px'
+                item.style.margin = '10px 10px'
 
                 messages.appendChild(item);
 

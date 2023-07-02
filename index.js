@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
 
             socket.broadcast.emit('new user', { success: true, message: data + ' entrou no chat.' });
 
-            socket.emit('new user', { success: true, message: 'Bem-vindo ao chat ' + data });
+            socket.emit('new user', { success: true, message: 'Bem-vindo ao chat, ' + data });
 
             //Emit para os outros usuários dizendo que tem um novo usuário ativo.
 
@@ -65,20 +65,18 @@ io.on('connection', (socket) => {
 
 
     socket.on('disconnect', () => {
-
         let id = socketIds.indexOf(socket.id);
-
-        socketIds.splice(id, 1);
-
-        usuarios.splice(id, 1);
-
-        console.log(socketIds);
-
-        console.log(usuarios);
-
-        console.log('user disconnected');
-
+        if (id !== -1) {
+            let disconnectedUser = usuarios[id];
+            socketIds.splice(id, 1);
+            usuarios.splice(id, 1);
+            console.log(socketIds);
+            console.log(usuarios);
+            console.log(disconnectedUser + ' disconnected');
+            socket.broadcast.emit('new user', { success: true, message: disconnectedUser + ' saiu do chat' });
+        }
     });
+
 
 
 
