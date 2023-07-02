@@ -107,10 +107,12 @@
             console.log(data.success)
             if (data.success) {
                 var item = document.createElement('li');
-
                 item.textContent = data.message
-                item.style.fontSize = '20px'
-                item.style.color = '#575757'
+                if (data.desconect) {
+                    item.style.fontSize = '20px'
+                    item.style.color = '#575757'
+                }
+
                 messages.appendChild(item);
 
             } else {

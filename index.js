@@ -73,7 +73,7 @@ io.on('connection', (socket) => {
             console.log(socketIds);
             console.log(usuarios);
             console.log(disconnectedUser + ' disconnected');
-            socket.broadcast.emit('new user', { success: true, message: disconnectedUser + ' saiu do chat' });
+            socket.broadcast.emit('new user', { success: true, message: disconnectedUser + ' saiu do chat', desconect: true });
         }
     });
 
