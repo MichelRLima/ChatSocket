@@ -3,9 +3,11 @@
 <html>
 
 <head>
-
+    <meta charset="UTF-8">
     <title>Socket.IO chat</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@800&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -43,6 +45,7 @@
             outline: none;
         }
 
+
         #form>button {
             background: #333;
             border: none;
@@ -74,11 +77,24 @@
             background-color: white;
 
         }
+
+        h2 {
+            text-align: center;
+            border-bottom: 5px solid gray;
+            padding: 15px;
+            font-family: "Martian Mono ExtraBold 800", Arial, sans-serif;
+            font-size: 50px;
+
+        }
     </style>
+
+
 
 </head>
 
+
 <body>
+    <h2>Chat em grupo</h2>
 
     <ul id="messages"></ul>
 
@@ -88,6 +104,8 @@
 
     </form>
 
+
+
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
@@ -96,7 +114,9 @@
         alert("Ola, esse chat foi criado com Socket.IO por Michel Rocha")
         var nome = prompt('Qual seu nome?');
 
-
+        if (nome === null || nome === undefined || nome === "") {
+            window.location.href = "/";
+        }
 
         socket.emit('new user', nome);
 
@@ -108,10 +128,10 @@
             if (data.success) {
                 var item = document.createElement('li');
                 item.textContent = data.message
-                if (data.desconect) {
-                    item.style.fontSize = '20px'
-                    item.style.color = '#575757'
-                }
+
+                item.style.fontSize = '20px'
+                item.style.color = '#575757'
+
 
                 messages.appendChild(item);
 
@@ -156,6 +176,25 @@
 
         })
 
+        if ("Notification" in window) {
+            if (Notification.permission !== "granted") {
+                Notification.requestPermission().then(function (permission) {
+                    if (permission === "granted") {
+                        console.log("Permissão para notificações concedida!");
+                    }
+                });
+            }
+        }
+
+        function showNotification(message) {
+            if (Notification.permission === "granted") {
+                var notification = new Notification("Nova mensagem do Chat", {
+                    body: message,
+                    icon: "./socket.png"
+                });
+            }
+        }
+
 
 
         socket.on('chat message', function (obj) {
@@ -178,6 +217,8 @@
 
                 messages.appendChild(item);
 
+
+
                 window.scrollTo(0, document.body.scrollHeight);
 
             } else {
@@ -194,6 +235,10 @@
                 item.style.margin = '10px 10px'
 
                 messages.appendChild(item);
+
+                if (Notification.permission === "granted") {
+                    showNotification(obj.nome + ' disse: ' + obj.msg);
+                }
 
                 window.scrollTo(0, document.body.scrollHeight);
 
